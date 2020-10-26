@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.signup.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +29,7 @@ public class OutboundCommunicator {
 	@Value("${connection}")
 	private String connection;
 	
-	public Auth0Response registerUser(UserRegBean user) throws JsonProcessingException {
+	public Auth0Response registerUser(User user) throws JsonProcessingException {
 		RestTemplate rt = new RestTemplate();
 		ObjectMapper mapper = new ObjectMapper();
 		Auth0UserModel userModel = convertToModel(user);
@@ -51,7 +52,7 @@ public class OutboundCommunicator {
 		return auth0Resp;
 	}
 	
-	private Auth0UserModel convertToModel(UserRegBean user) {
+	private Auth0UserModel convertToModel(User user) {
 		Auth0UserModel userModel = new Auth0UserModel();
 		userModel.setClient_id(clientId);
 		userModel.setConnection(connection);
