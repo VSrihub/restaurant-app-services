@@ -8,8 +8,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.signup.Auth0Response;
 import com.signup.OutboundCommunicator;
+import com.signup.bean.EmailBean;
 import com.signup.bean.UserBean;
 import com.signup.model.User;
 import com.signup.repo.UserRepository;
@@ -49,6 +51,17 @@ public class UserManagementServiceImpl implements UserManagementService {
 				 * step-2: Create User in our Database
 				 */
 				userModel = userRepo.save(userModel);
+				if(userModel.getId()> 0) {
+					EmailBean mailBean = new EmailBean();
+					mailBean.setMailTo(userModel.getEmail());
+					mailBean.setMailFrom("admin@restaurant.spicy.co.in");
+					mailBean.setMailSubject("Verification Email");
+					mailBean.setMailType("VerificationEmail");
+					ObjectMapper mapper = new ObjectMapper();
+					String mailJson = mapper.writeValueAsString(mailBean);
+					outbound.sendVerificationEmail(mailJson);
+				}
+				
 			}else {
 				//throw an exception with the reason for failure
 				

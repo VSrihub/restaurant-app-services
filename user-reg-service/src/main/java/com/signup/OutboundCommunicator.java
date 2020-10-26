@@ -62,4 +62,20 @@ public class OutboundCommunicator {
 		userModel.setGiven_name(user.getFname()+" "+user.getLname());
 		return userModel;
 	}
+	
+	public boolean sendVerificationEmail(String emailData) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		RestTemplate rt = new RestTemplate();
+		HttpEntity<String> request = new HttpEntity<>(emailData, headers);
+		
+		String emailresp = rt.postForObject("http://localhost:6052/notification-service/api/mail",
+				request, String.class);
+		
+		if(emailresp != null) {
+			return true;
+		}
+		
+		return false;
+	}
 }
