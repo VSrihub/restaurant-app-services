@@ -48,6 +48,7 @@ public class User implements Serializable {
 	/**
 	 * For access
 	 */
+	
 	private boolean isLocked;
 	private boolean isPwdChanged;
 	

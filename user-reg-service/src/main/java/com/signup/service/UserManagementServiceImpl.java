@@ -90,8 +90,16 @@ public class UserManagementServiceImpl implements UserManagementService {
 	 */
 	@Override
 	public UserBean findByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		User userModel = userRepo.fetchUserByEmail(email);
+		
+		/**
+		 * set the lock and update the user in db
+		 */
+		userModel.setLocked(false);
+		userModel = userRepo.save(userModel);
+		
+		return DataMapper.mapModelToBean(userModel);
 	}
 
 	/* (non-Javadoc)
@@ -99,8 +107,15 @@ public class UserManagementServiceImpl implements UserManagementService {
 	 */
 	@Override
 	public UserBean changePassword(UserBean userBean) {
-		// TODO Auto-generated method stub
-		return null;
+		User userModel = userRepo.fetchUserByEmail(userBean.getEmail());
+		userModel.setPassword(userBean.getPassword());
+		userModel.setCpassword(userBean.getCpassword());
+		userModel.setPwdChanged(true);
+		userModel = userRepo.save(userModel);
+		
+		//auth0 idp password change
+		
+		return DataMapper.mapModelToBean(userModel);
 	}
 
 	/* (non-Javadoc)

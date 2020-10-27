@@ -4,6 +4,7 @@
 package com.signup;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,19 +46,30 @@ public class UserRegController {
 		return ResponseEntity.ok(user);
 	}
 	
+	@PostMapping("/user-reg/changePwd")
+	public ResponseEntity<? extends Object> changePassword(@RequestBody UserBean user){
+		log.info("the user registered data is:\t"+user.getEmail());
+		
+		try {
+			user = userService.changePassword(user);
+			return new ResponseEntity<Object>(user, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return new ResponseEntity<Object>("the inout is not sufficient", HttpStatus.BAD_REQUEST);
+	}
+	
 	@GetMapping("/user-reg/{email}")
-	public void verifyEmail(@PathVariable("email") String userEmail){
+	public ResponseEntity<? extends Object> verifyEmail(@PathVariable("email") String userEmail){
 		log.info("the user registered data is:\t"+userEmail);
+		try {
+			UserBean userBean = userService.findByEmail(userEmail);
+			return new ResponseEntity<Object>(userBean, HttpStatus.OK);
+		}catch (Exception e) {
+			log.error(e.getMessage());
+		}
 		
-		//go to db and get the user by email
-		
-		//set account lock is false
-		
-		//update user
-		
-		//redirect to ui
-		
-		
+		return new ResponseEntity<Object>("the inout is not sufficient", HttpStatus.BAD_REQUEST);
 		
 	}
 }
