@@ -59,7 +59,7 @@ public class UserRegController {
 		return new ResponseEntity<Object>("the inout is not sufficient", HttpStatus.BAD_REQUEST);
 	}
 	
-	@GetMapping("/user-reg/{email}")
+	@GetMapping("/user-reg/verifyAccount/{email}")
 	public ResponseEntity<? extends Object> verifyEmail(@PathVariable("email") String userEmail){
 		log.info("the user registered data is:\t"+userEmail);
 		try {
