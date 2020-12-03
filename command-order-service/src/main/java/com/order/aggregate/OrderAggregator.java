@@ -34,11 +34,26 @@ public class OrderAggregator {
 	
 	private String status;
 	
-	@CommandHandler
+	/*@CommandHandler
 	public void OrderAggregate(PlaceOrderCommand orderCommand) {
 		System.out.println("orderCommand id "+orderCommand.getId());
 		AggregateLifecycle.apply(new PlaceOrderEvent(orderCommand.getId(), 
 				orderCommand.getRestaurantId(), orderCommand.getDishes(), "IN PROGRESS"));
+	}*/
+	
+	public OrderAggregator() {
+		
+	}
+	
+	@CommandHandler
+	public OrderAggregator(PlaceOrderCommand orderCommand) {
+		System.out.println("orderCommand id "+orderCommand.getId());
+		
+		AggregateLifecycle.apply(new PlaceOrderEvent(orderCommand.getId(), 
+				orderCommand.getRestaurantId(), orderCommand.getDishes(), "IN PROGRESS"));
+		
+		//mqSender.sendOrPlaceOrderRequest(event);
+		
 	}
 	
 	@EventHandler

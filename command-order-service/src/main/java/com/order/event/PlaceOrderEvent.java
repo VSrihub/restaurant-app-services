@@ -21,13 +21,16 @@ public class PlaceOrderEvent implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final String id;
+	private String id;
 	
 	private String restaurantId;
 	private List<Map<Object, Object>> dishes;
 	
-	private final String status;
+	private String status;
 
+	public PlaceOrderEvent() {
+		// TODO Auto-generated constructor stub
+	}
 	public PlaceOrderEvent(String id, String restaurantId, List<Map<Object, Object>> dishes, String status) {
 		super();
 		this.id = id;
