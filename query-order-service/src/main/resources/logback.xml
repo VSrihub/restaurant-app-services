@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="ConsoleAppender"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="FileAppender"
+		class="ch.qos.logback.core.FileAppender">
+		<file>c:/logs/command-order-api.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+	
+	<!-- Logging custom package -->
+	<logger name="com.order" level="info" additivity="false">
+		<!-- <appender-ref ref="ConsoleAppender"></appender-ref> -->
+		<appender-ref ref="FileAppender"></appender-ref>
+	</logger>
+
+	<!-- Logging spring boot package -->
+	<logger name="o.s.web" level="error"
+		additivity="false">
+		<!-- <appender-ref ref="ConsoleAppender"></appender-ref> -->
+		<appender-ref ref="FileAppender"></appender-ref>
+	</logger>
+
+
+	<root level="info">
+		<appender-ref ref="FileAppender"></appender-ref>
+	</root>
+</configuration>
