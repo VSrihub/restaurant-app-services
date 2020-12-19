@@ -6,6 +6,8 @@ package com.food.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,12 +31,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @CrossOrigin(allowedHeaders="*")
+@RefreshScope
 @RequestMapping("/api")
 @Slf4j
 public class FoodController {
 
 	@Autowired
 	private FoodService foodService;
+	
+	@Value("${todays.food.available.hours}")
+	private String todayavailableHours;
 	
 	@PostMapping("/food")
 	public ResponseEntity<? extends Object> addfood(@RequestBody FoodBean foodBean){
@@ -61,6 +67,7 @@ public class FoodController {
 	@GetMapping("/food")
 	public ResponseEntity<? extends Object> getAllCategories(){
 		try {
+			log.info("food will be availabel today for just :\t"+todayavailableHours+":\thours");
 			List<FoodBean> foodBeanList = foodService.findAll();		
 			return new ResponseEntity<Object>(foodBeanList, HttpStatus.OK);
 		}catch (Exception e) {

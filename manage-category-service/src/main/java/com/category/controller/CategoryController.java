@@ -6,6 +6,8 @@ package com.category.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +30,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @CrossOrigin(allowedHeaders="*")
+@RefreshScope
 @RequestMapping("/api")
 @Slf4j
 public class CategoryController {
 
 	@Autowired
 	private CategoryService catService;
+	
+	@Value("${todays.biryani.price}")
+	private String todayBiryaniPrice;
 	
 	@PostMapping("/category")
 	public ResponseEntity<? extends Object> addCategory(@RequestBody CategoryBean catBean){
@@ -49,6 +55,7 @@ public class CategoryController {
 	@GetMapping("/category")
 	public ResponseEntity<? extends Object> getAllCategories(){
 		try {
+			log.info("todays biryani price is:\t"+todayBiryaniPrice);
 			List<CategoryBean> catBeanList = catService.findAll();		
 			return new ResponseEntity<Object>(catBeanList, HttpStatus.OK);
 		}catch (Exception e) {

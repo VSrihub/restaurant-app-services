@@ -27,6 +27,8 @@ public class AuthenticationController {
 	@Autowired
 	private AuthnService authnService;
 	
+	
+	
 	@PostMapping("/authenticate")
 	public ResponseEntity<? extends Object> doLogin(@RequestBody AuthenticationBean authnBean){
 		if(AuthnConstants.IDP_AUTHN_TYPE.equalsIgnoreCase(authnBean.getAuthType())) {
