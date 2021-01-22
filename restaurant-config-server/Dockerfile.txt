@@ -1,0 +1,3 @@
+FROM java:8
+ADD target/restaurant-config-server.jar restaurant-config-server.jar
+ENTRYPOINT [ "java","-jar","restaurant-config-server.jar" ]

@@ -1,0 +1,3 @@
+FROM java:8
+ADD target/registry-discovery-server.jar registry-discovery-server.jar
+ENTRYPOINT [ "java","-jar","registry-discovery-server.jar" ]

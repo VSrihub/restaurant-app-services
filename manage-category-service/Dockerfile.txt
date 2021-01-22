@@ -1,0 +1,3 @@
+FROM java:8
+ADD target/manage-category-service.jar manage-category-service.jar
+ENTRYPOINT [ "java","-jar","manage-category-service.jar" ]
