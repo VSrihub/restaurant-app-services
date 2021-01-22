@@ -5,15 +5,18 @@ package com.food.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.food.bean.FoodBean;
+import com.food.exception.FoodNotFound;
 import com.food.mapper.DataMapper;
 import com.food.model.Food;
 import com.food.repo.FoodRepo;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,10 +25,14 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
+@Setter
 public class FoodServiceImpl implements FoodService {
 
-	@Autowired
+	//@Autowired
 	private FoodRepo foodRepo;
+	/*public FoodServiceImpl(FoodRepo foodRepo) {
+		this.foodRepo=foodRepo;
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see com.category.service.CategoryService#save(com.category.bean.CategoryBean)
@@ -45,9 +52,15 @@ public class FoodServiceImpl implements FoodService {
 	 * @see com.category.service.CategoryService#findCatById(int)
 	 */
 	@Override
-	public FoodBean findCatById(int id) {
-		Food FoodModel  = foodRepo.getOne(id);
-		return DataMapper.mapModelToBean(FoodModel);
+	public FoodBean findCatById(int id) throws FoodNotFound {
+		//Food FoodModel  = foodRepo.getOne(id);
+		Optional<Food> foodOptional = foodRepo.findById(id);
+		if(foodOptional.isPresent()) {
+			return DataMapper.mapModelToBean(foodOptional.get());
+		}else {
+			throw new FoodNotFound("Food with the Id "+id+" not found");
+		}
+		
 	}
 
 	/* (non-Javadoc)

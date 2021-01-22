@@ -5,6 +5,8 @@ package com.food.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.food.bean.FoodBean;
+import com.food.exception.CreateFoodException;
+import com.food.exception.FoodNotFound;
 import com.food.service.FoodService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +41,12 @@ public class FoodController {
 	private FoodService foodService;
 	
 	@PostMapping("/food")
-	public ResponseEntity<? extends Object> addfood(@RequestBody FoodBean foodBean){
-		try {
+	public ResponseEntity<? extends Object> addfood(@Valid @RequestBody FoodBean foodBean) throws CreateFoodException{
+		//try {
 			foodBean = foodService.save(foodBean);			
-		}catch (Exception e) {
+		/*}catch (Exception e) {
 			return new ResponseEntity<Object>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}*/
 		
 		return new ResponseEntity<Object>(foodBean, HttpStatus.OK);
 	}
@@ -82,13 +86,13 @@ public class FoodController {
 	}
 	
 	@GetMapping("/food/{foodId}")
-	public ResponseEntity<? extends Object>  foodById(@PathVariable("foodId") int foodId){
+	public ResponseEntity<? extends Object>  foodById(@PathVariable("foodId") int foodId) throws FoodNotFound{
 		log.info("food id is:\t"+foodId);;
-		try {
+		//try {
 			FoodBean foodBean = foodService.findCatById(foodId);
 			return new ResponseEntity<Object>(foodBean, HttpStatus.OK);
-		}catch (Exception e) {
+		/*}catch (Exception e) {
 			return new ResponseEntity<Object>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}*/
 	}
 }
